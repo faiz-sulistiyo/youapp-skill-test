@@ -1,10 +1,17 @@
+import { PASSWORD_INCORRECT } from "@/constant";
 import { authMapper } from "@/mapper/authMapper";
-import { AuthDto } from "@/types/auth";
+import { AuthDto, LoginResponse } from "@/types/auth";
 import { useMutation } from "@tanstack/react-query";
 
-const baseUrl = process.env.BASE_URL_YOUAPP_API || "";
+interface IUseLogin {
+    payload: AuthDto,
+    onSuccess: (data: LoginResponse) => void,
+    onError: (error: Error) => void
+}
 
+const baseUrl = process.env.YOUAPP_API_URL;
 const login = async (loginPayload: AuthDto) => {
+
     const response = await fetch(`${baseUrl}/login`, {
         method: 'POST',
         headers: {
@@ -13,16 +20,20 @@ const login = async (loginPayload: AuthDto) => {
         },
         body: JSON.stringify(loginPayload)
     })
-    if (!response.ok) {
-        throw new Error('Network response was not ok');
+
+    const data = await response.json();
+    if (!response.ok || [PASSWORD_INCORRECT,].includes(data?.message)) {
+        throw new Error(data?.message);
     }
 
-    return authMapper.loginMapper(response.json());
+    return authMapper.loginMapper(data);
 }
 
-export const useLogin = (loginPayload:AuthDto) => {
+export const useLogin = ({ onError, onSuccess, payload }: IUseLogin) => {
     return useMutation({
-        mutationKey:["auth-login"],
-        mutationFn: async () => await login(loginPayload)
+        mutationKey: ["auth-login"],
+        mutationFn: async () => await login(payload),
+        onSuccess,
+        onError
     })
 }

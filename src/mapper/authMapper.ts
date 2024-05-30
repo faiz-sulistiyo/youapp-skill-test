@@ -1,9 +1,9 @@
 import { LoginResponse } from "@/types/auth";
 
-const loginMapper = (data:any):LoginResponse =>{
+const loginMapper = (data:any):LoginResponse => {
     return {
-        message:data?.message ?? "",
-        access_token: data?.access_token ?? ""
+        message: data?.message,
+        accessToken: data?.access_token ?? ""
     }
 }
 

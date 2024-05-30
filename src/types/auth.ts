@@ -1,3 +1,5 @@
+import { BaseResponse } from "./common"
+
 type AuthDto = {
     email: string,
     username: string,
@@ -5,8 +7,8 @@ type AuthDto = {
 }
 
 type LoginResponse = {
-    message:string,
-    access_token:string
+    message:string
+    accessToken:string
 }
 
 export type {
