@@ -1,4 +1,4 @@
-import userMapper from "@/mapper/userMapper";
+import {userMapper} from "@/mapper/userMapper";
 import { UserDto, UserResponse } from "@/types/user";
 import { useMutation, useQuery } from "@tanstack/react-query";
 

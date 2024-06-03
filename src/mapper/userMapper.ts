@@ -6,6 +6,6 @@ const profileMapper = (data:any):UserResponse => {
     }
 }
 
-export default {
+export const userMapper = {
     profileMapper
 }
