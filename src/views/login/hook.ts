@@ -1,4 +1,4 @@
-import { parseJwt } from '@/lib/jwtParser';
+import { parseJwt } from '@/lib/utils';
 import { useLogin } from '@/services/auth';
 import { AuthDto } from '@/types/auth';
 import Cookie from 'js-cookie';
@@ -23,8 +23,9 @@ export const useLoginHook = () => {
         message: ""
     })
 
-    // mapping payload
+    // Mapping Payload
     const loginPayload: AuthDto = useMemo(() => {
+        // Since the input field is only one for email and username, we need the validate is it email or not
         const emailRegex: RegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return {
             email: emailRegex.test(user.emailOrUserName) ? user.emailOrUserName : "",
@@ -33,8 +34,8 @@ export const useLoginHook = () => {
         }
     }, [user])
 
-    // mutation login
-    const { mutate: login, data } = useLogin({
+    // Mutation Login
+    const { mutate: login, isPending:isLoadingLogin } = useLogin({
         payload: loginPayload,
         onError: (error) => {
             setError({
@@ -45,6 +46,7 @@ export const useLoginHook = () => {
         onSuccess: (data) => {
             const parsedData = parseJwt(data.accessToken);
             if (parsedData) {
+                Cookie.set('token', data.accessToken);
                 Cookie.set('currentUser', parsedData);
                 router.replace('/profile')
             }
@@ -56,13 +58,10 @@ export const useLoginHook = () => {
         setUser(prevUser => ({ ...prevUser, [key]: value }));
     }, []);
 
+    // memoize disabled button
     const submitDisabled: boolean = useMemo(() => {
         return (!user.emailOrUserName || !user.password);
     }, [user])
-
-    const handleSubmitLogin = useCallback(() => {
-        login();
-    }, [login])
 
     const handleCloseNotif = useCallback(() => {
         setError({
@@ -75,12 +74,13 @@ export const useLoginHook = () => {
         data: {
             user,
             submitDisabled,
-            error
+            error,
+            isLoadingLogin
         },
         method: {
             handleChange,
-            handleSubmitLogin,
-            handleCloseNotif
+            handleCloseNotif,
+            login
         },
     };
 };

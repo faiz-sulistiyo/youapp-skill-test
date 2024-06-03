@@ -6,12 +6,16 @@ type AuthDto = {
     password: string
 }
 
-type LoginResponse = {
-    message:string
+type LoginResponse = BaseResponse & {
     accessToken:string
+}
+
+type RegisterResponse = BaseResponse & {
+
 }
 
 export type {
     AuthDto,
-    LoginResponse
+    LoginResponse,
+    RegisterResponse
 }

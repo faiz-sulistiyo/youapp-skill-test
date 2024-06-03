@@ -1,6 +1,6 @@
 type BaseResponse = {
-    status:boolean,
-    code:number,
+    status?:boolean,
+    code?:number,
     message:string
 }
 

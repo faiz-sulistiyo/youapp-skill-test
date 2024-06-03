@@ -1,0 +1,5 @@
+body {
+  color: rgb(var(--foreground-rgb));
+  background: #09141A;
+  min-height:100vh;
+}

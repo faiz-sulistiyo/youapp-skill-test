@@ -1,4 +1,4 @@
-import { LoginResponse } from "@/types/auth";
+import { LoginResponse, RegisterResponse } from "@/types/auth";
 
 const loginMapper = (data:any):LoginResponse => {
     return {
@@ -7,6 +7,13 @@ const loginMapper = (data:any):LoginResponse => {
     }
 }
 
+const registerMapper = (data:any): RegisterResponse => {
+    return {
+        message: data?.message,
+    }
+}
+
 export const authMapper = {
-    loginMapper
+    loginMapper,
+    registerMapper
 }

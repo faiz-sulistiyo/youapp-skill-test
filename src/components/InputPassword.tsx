@@ -23,7 +23,7 @@ const InputPassword: React.FC<IInputPasswordProps> = ({
     <div className="flex flex-1 bg-white bg-opacity-5 rounded-lg p-4.5">
       <input
         value={value}
-        className={`${className} flex-1 bg-transparent focus-within:outline-none  text-sm font-medium `}
+        className={`${className} flex-1 bg-transparent placeholder:text-gray-4 focus-within:outline-none  text-sm font-medium `}
         onChange={handleOnChange}
         {...rest}
         type={show ? "text" : "password"}
